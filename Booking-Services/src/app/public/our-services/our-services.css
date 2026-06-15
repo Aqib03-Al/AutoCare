@@ -1,0 +1,83 @@
+.page-hero {
+  background: linear-gradient(135deg, #0f172a, #1e3a5f);
+  color: #fff;
+  padding: 4rem 0 3rem;
+  text-align: center;
+}
+
+.page-hero h1 {
+  font-weight: 800;
+  font-size: 2.5rem;
+}
+
+.page-hero p {
+  color: #94a3b8;
+}
+
+.service-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  height: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-top: 3px solid #f97316;
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.service-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.service-card h5 {
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.service-card p {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.service-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.price {
+  font-weight: 700;
+  color: #f97316;
+  font-size: 1.1rem;
+}
+
+.duration {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.book-cta {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 2.5rem;
+}
+
+.btn-accent {
+  background: #f97316;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-accent:hover {
+  background: #ea580c;
+  color: #fff;
+}

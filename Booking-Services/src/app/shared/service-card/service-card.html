@@ -1,0 +1,14 @@
+<div class="service-card-modern">
+  <div class="service-card-top">
+    <div class="service-icon-box" [innerHTML]="iconSvg"></div>
+    <span class="service-price">Rs. {{ service.price | number }}</span>
+  </div>
+  <h5 class="service-name">{{ service.name }}</h5>
+  <p class="service-desc">{{ service.description || 'Professional service by expert technicians.' }}</p>
+  <div class="service-meta">
+    <span>{{ service.duration }} min</span>
+  </div>
+  @if (showBookButton) {
+    <button class="book-btn" (click)="book.emit(service._id)">Book Now</button>
+  }
+</div>

@@ -1,0 +1,75 @@
+@if (bookings.length === 0) {
+  <p class="text-muted">No bookings found.</p>
+} @else {
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Service</th>
+          @if (showCustomer) {
+            <th>Customer</th>
+            <th>Phone</th>
+          }
+          <th>Vehicle</th>
+          <th>Status</th>
+          <th>Preferred</th>
+          <th>Assigned</th>
+          <th>Price</th>
+          @if (showActions) {
+            <th>Actions</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (booking of bookings; track booking._id) {
+          <tr>
+            <td>{{ serviceName(booking) }}</td>
+            @if (showCustomer) {
+              <td>{{ customerName(booking) }}</td>
+              <td>{{ customerPhone(booking) }}</td>
+            }
+            <td>
+              {{ booking.vehicle.make }} {{ booking.vehicle.model }}<br />
+              <small class="text-muted">{{ booking.vehicle.plateNumber }}</small>
+            </td>
+            <td><app-status-badge [status]="booking.status" /></td>
+            <td>
+              @if (booking.preferredDate) {
+                {{ booking.preferredDate }} {{ booking.preferredTime }}
+              } @else {
+                —
+              }
+            </td>
+            <td>
+              @if (booking.assignedDate) {
+                <strong>{{ booking.assignedDate }} {{ booking.assignedTime }}</strong>
+              } @else {
+                —
+              }
+            </td>
+            <td>Rs. {{ booking.totalPrice }}</td>
+            @if (showActions) {
+              <td>
+                @if (actionType === 'customer' && booking.status === 'pending') {
+                  <button class="btn btn-sm btn-outline-danger" (click)="cancel.emit(booking._id)">Cancel</button>
+                }
+                @if (actionType === 'staff-pending' && booking.status === 'pending') {
+                  <button class="btn btn-sm btn-success me-1" (click)="approve.emit(booking)">Approve</button>
+                  <button class="btn btn-sm btn-danger" (click)="reject.emit(booking)">Reject</button>
+                }
+                @if (actionType === 'staff-all') {
+                  @if (booking.status === 'approved') {
+                    <button class="btn btn-sm btn-info me-1" (click)="startProgress.emit(booking._id)">Start</button>
+                  }
+                  @if (booking.status === 'in_progress') {
+                    <button class="btn btn-sm btn-success" (click)="complete.emit(booking._id)">Complete</button>
+                  }
+                }
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

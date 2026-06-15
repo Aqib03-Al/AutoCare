@@ -1,0 +1,4 @@
+.dashboard-page {
+  background: var(--bg-page);
+  min-height: 100%;
+}

@@ -1,0 +1,15 @@
+.status-pill {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-pill.pending { background: #fef3c7; color: #92400e; }
+.status-pill.approved { background: #dbeafe; color: #1e40af; }
+.status-pill.rejected { background: #fee2e2; color: #991b1b; }
+.status-pill.cancelled { background: #f3f4f6; color: #4b5563; }
+.status-pill.in_progress { background: #cffafe; color: #0e7490; }
+.status-pill.completed { background: var(--success-bg); color: var(--success-text); }

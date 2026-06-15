@@ -1,0 +1,41 @@
+<section class="page-hero">
+  <div class="container">
+    <h1>Our Services</h1>
+    <p>Professional vehicle care at competitive prices</p>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    @if (loading) {
+      <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+    } @else if (error) {
+      <div class="alert alert-danger">{{ error }}</div>
+    } @else if (services.length === 0) {
+      <p class="text-center text-muted">Services coming soon. Please check back later.</p>
+    } @else {
+      <div class="row g-4">
+        @for (service of services; track service._id) {
+          <div class="col-md-6 col-lg-4">
+            <div class="service-card">
+              <div class="service-icon">🔧</div>
+              <h5>{{ service.name }}</h5>
+              <p>{{ service.description || 'Professional service by expert technicians.' }}</p>
+              <div class="service-meta">
+                <span class="price">Rs. {{ service.price }}</span>
+                <span class="duration">{{ service.duration }} min</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <div class="book-cta mt-5 text-center">
+      <h4 class="mb-3">Want to book a service?</h4>
+      <p class="text-muted mb-3">Register or login to schedule your appointment online.</p>
+      <a routerLink="/register" class="btn btn-accent btn-lg me-2">Register</a>
+      <a routerLink="/login" class="btn btn-outline-dark btn-lg">Login</a>
+    </div>
+  </div>
+</section>

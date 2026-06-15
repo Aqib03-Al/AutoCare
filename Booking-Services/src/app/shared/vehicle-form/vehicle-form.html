@@ -1,0 +1,47 @@
+<div class="row" [formGroup]="form">
+  <div class="col-md-6 mb-3">
+    <label class="form-label required">Make</label>
+    <input
+      type="text"
+      class="form-control"
+      [class.is-invalid]="invalid('make')"
+      formControlName="make"
+      placeholder="e.g. Honda"
+    />
+    <app-field-error [control]="form.get('make')" label="Vehicle make" [submitted]="submitted" />
+  </div>
+  <div class="col-md-6 mb-3">
+    <label class="form-label required">Model</label>
+    <input
+      type="text"
+      class="form-control"
+      [class.is-invalid]="invalid('model')"
+      formControlName="model"
+      placeholder="e.g. Civic"
+    />
+    <app-field-error [control]="form.get('model')" label="Vehicle model" [submitted]="submitted" />
+  </div>
+  <div class="col-md-6 mb-3">
+    <label class="form-label required">Plate Number</label>
+    <input
+      type="text"
+      class="form-control"
+      [class.is-invalid]="invalid('plateNumber')"
+      formControlName="plateNumber"
+      placeholder="e.g. ABC-1234"
+    />
+    <app-field-error [control]="form.get('plateNumber')" label="Plate number" [submitted]="submitted" />
+  </div>
+  <div class="col-md-6 mb-3">
+    <label class="form-label required">Year</label>
+    <input
+      type="number"
+      class="form-control"
+      [class.is-invalid]="invalid('year')"
+      formControlName="year"
+      [min]="1900"
+      [max]="maxYear"
+    />
+    <app-field-error [control]="form.get('year')" label="Vehicle year" [submitted]="submitted" />
+  </div>
+</div>

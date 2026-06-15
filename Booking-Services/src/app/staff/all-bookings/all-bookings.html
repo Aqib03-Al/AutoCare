@@ -1,0 +1,41 @@
+<div class="page-content">
+  <div class="section-header">
+    <div>
+      <h2>All Bookings</h2>
+      <p>View and manage all workshop appointments</p>
+    </div>
+    <div>
+      <select class="form-select" style="width: auto; border-radius: 10px" (change)="onFilterChange($any($event.target).value)">
+        <option value="">All Statuses</option>
+        <option value="pending">Pending</option>
+        <option value="approved">Approved</option>
+        <option value="in_progress">In Progress</option>
+        <option value="completed">Completed</option>
+        <option value="rejected">Rejected</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </div>
+  </div>
+
+  @if (message) {
+    <div class="alert alert-success">{{ message }}</div>
+  }
+  @if (error) {
+    <div class="alert alert-danger">{{ error }}</div>
+  }
+
+  @if (loading) {
+    <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+  } @else {
+    <div class="recent-table-wrap">
+      <app-booking-table
+        [bookings]="bookings"
+        [showCustomer]="true"
+        [showActions]="true"
+        actionType="staff-all"
+        (startProgress)="startProgress($event)"
+        (complete)="complete($event)"
+      />
+    </div>
+  }
+</div>

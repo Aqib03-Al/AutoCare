@@ -1,0 +1,72 @@
+<div class="auth-page">
+  <div class="auth-panel auth-panel-brand">
+    <div class="auth-brand-content">
+      <span class="brand-mark d-inline-flex mb-3">AC</span>
+      <h1>Welcome to AutoCare Workshop</h1>
+      <p>Sign in to book services, track your appointments, and manage your vehicle maintenance online.</p>
+      <ul class="auth-features">
+        <li>
+          <span class="auth-feature-icon">📅</span>
+          Book services in minutes
+        </li>
+        <li>
+          <span class="auth-feature-icon">🔔</span>
+          Track booking status live
+        </li>
+        <li>
+          <span class="auth-feature-icon">🚗</span>
+          Manage all your vehicles
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="auth-panel auth-panel-form">
+    <div class="auth-card">
+      <h2>Sign In</h2>
+      <p class="auth-subtitle">Enter your credentials to access your account</p>
+
+      @if (error) {
+        <div class="alert alert-danger">{{ error }}</div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        @if (submitted && form.invalid) {
+          <div class="form-validation-summary">Please correct the highlighted fields before signing in.</div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label required">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            [class.is-invalid]="invalid('email')"
+            formControlName="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+          <app-field-error [control]="form.get('email')" label="Email" [submitted]="submitted" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label required">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            [class.is-invalid]="invalid('password')"
+            formControlName="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+          />
+          <app-field-error [control]="form.get('password')" label="Password" [submitted]="submitted" />
+        </div>
+        <button type="submit" class="auth-submit" [disabled]="loading">
+          {{ loading ? 'Signing in...' : 'Sign In' }}
+        </button>
+      </form>
+
+      <p class="auth-footer-link">
+        Don't have an account? <a routerLink="/register">Create one</a>
+      </p>
+    </div>
+  </div>
+</div>

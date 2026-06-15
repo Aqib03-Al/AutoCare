@@ -1,0 +1,120 @@
+<h2 class="mb-4">Manage Services</h2>
+
+@if (message) {
+  <div class="alert alert-success">{{ message }}</div>
+}
+@if (error) {
+  <div class="alert alert-danger">{{ error }}</div>
+}
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h5>{{ editingId ? 'Edit Service' : 'Add New Service' }}</h5>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      @if (submitted && form.invalid) {
+        <div class="form-validation-summary">Please correct the highlighted fields before saving.</div>
+      }
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label required">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [class.is-invalid]="invalid('name')"
+            formControlName="name"
+            placeholder="e.g. Oil Change"
+          />
+          <app-field-error [control]="form.get('name')" label="Service name" [submitted]="submitted" />
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label required">Price (Rs.)</label>
+          <input
+            type="number"
+            class="form-control"
+            [class.is-invalid]="invalid('price')"
+            formControlName="price"
+            min="0"
+            placeholder="0"
+          />
+          <app-field-error [control]="form.get('price')" label="Price" [submitted]="submitted" />
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label required">Duration (min)</label>
+          <input
+            type="number"
+            class="form-control"
+            [class.is-invalid]="invalid('duration')"
+            formControlName="duration"
+            min="1"
+            placeholder="30"
+          />
+          <app-field-error [control]="form.get('duration')" label="Duration" [submitted]="submitted" />
+        </div>
+        <div class="col-12 mb-3">
+          <label class="form-label">Description</label>
+          <textarea
+            class="form-control"
+            [class.is-invalid]="invalid('description')"
+            formControlName="description"
+            rows="2"
+            placeholder="Brief description of the service"
+          ></textarea>
+          <app-field-error [control]="form.get('description')" label="Description" [submitted]="submitted" />
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary me-2" [disabled]="loading">
+        {{ editingId ? 'Update Service' : 'Add Service' }}
+      </button>
+      @if (editingId) {
+        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+      }
+    </form>
+  </div>
+</div>
+
+@if (loading) {
+  <div class="text-center py-3"><div class="spinner-border text-primary"></div></div>
+} @else {
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Duration</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (services.length === 0) {
+          <tr>
+            <td colspan="6" class="text-center text-muted py-4">No services found. Add one above.</td>
+          </tr>
+        } @else {
+          @for (service of services; track service._id) {
+            <tr>
+              <td>{{ service.name }}</td>
+              <td>{{ service.description }}</td>
+              <td>Rs. {{ service.price }}</td>
+              <td>{{ service.duration }} min</td>
+              <td>
+                <span class="badge" [class.bg-success]="service.isActive" [class.bg-secondary]="!service.isActive">
+                  {{ service.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary me-1" (click)="startEdit(service)">Edit</button>
+                @if (service.isActive) {
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteService(service._id)">Deactivate</button>
+                }
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+}

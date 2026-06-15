@@ -1,0 +1,115 @@
+<div class="page-content">
+  <div class="section-header">
+    <div>
+      <h2>Pending Requests</h2>
+      <p>Review and approve customer booking requests</p>
+    </div>
+  </div>
+
+  @if (message) {
+    <div class="alert alert-success">{{ message }}</div>
+  }
+  @if (error) {
+    <div class="alert alert-danger">{{ error }}</div>
+  }
+
+  @if (loading) {
+    <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+  } @else {
+    <div class="recent-table-wrap">
+      <app-booking-table
+        [bookings]="bookings"
+        [showCustomer]="true"
+        [showActions]="true"
+        actionType="staff-pending"
+        (approve)="openApprove($event)"
+        (reject)="openReject($event)"
+      />
+    </div>
+  }
+
+  @if (modalType === 'approve') {
+    <div class="modal show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5)">
+      <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: var(--radius-lg); border: 1px solid var(--border)">
+          <div class="modal-header">
+            <h5 class="modal-title">Approve & Assign Slot</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+          </div>
+          <div class="modal-body" [formGroup]="approveForm">
+            @if (modalError) {
+              <div class="alert alert-danger">{{ modalError }}</div>
+            }
+            @if (approveSubmitted && approveForm.invalid) {
+              <div class="form-validation-summary mb-3">Please provide both date and time before approving.</div>
+            }
+            <div class="mb-3">
+              <label class="form-label required">Assigned Date</label>
+              <input
+                type="date"
+                class="form-control"
+                [class.is-invalid]="invalidApprove('assignedDate')"
+                formControlName="assignedDate"
+              />
+              <app-field-error [control]="approveForm.get('assignedDate')" label="Assigned date" [submitted]="approveSubmitted" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label required">Assigned Time</label>
+              <input
+                type="time"
+                class="form-control"
+                [class.is-invalid]="invalidApprove('assignedTime')"
+                formControlName="assignedTime"
+              />
+              <app-field-error [control]="approveForm.get('assignedTime')" label="Assigned time" [submitted]="approveSubmitted" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline-secondary" (click)="closeModal()">Cancel</button>
+            <button class="btn btn-success" (click)="confirmApprove()" [disabled]="approveLoading">
+              {{ approveLoading ? 'Approving...' : 'Approve Booking' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (modalType === 'reject') {
+    <div class="modal show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5)">
+      <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: var(--radius-lg); border: 1px solid var(--border)">
+          <div class="modal-header">
+            <h5 class="modal-title">Reject Booking</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+          </div>
+          <div class="modal-body" [formGroup]="rejectForm">
+            @if (modalError) {
+              <div class="alert alert-danger">{{ modalError }}</div>
+            }
+            @if (rejectSubmitted && rejectForm.invalid) {
+              <div class="form-validation-summary mb-3">Please provide a rejection reason before continuing.</div>
+            }
+            <div class="mb-3">
+              <label class="form-label required">Rejection Reason</label>
+              <textarea
+                class="form-control"
+                [class.is-invalid]="invalidReject('rejectionReason')"
+                formControlName="rejectionReason"
+                rows="3"
+                placeholder="Explain why this booking cannot be accepted"
+              ></textarea>
+              <app-field-error [control]="rejectForm.get('rejectionReason')" label="Rejection reason" [submitted]="rejectSubmitted" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline-secondary" (click)="closeModal()">Cancel</button>
+            <button class="btn btn-danger" (click)="confirmReject()" [disabled]="rejectLoading">
+              {{ rejectLoading ? 'Rejecting...' : 'Reject Booking' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

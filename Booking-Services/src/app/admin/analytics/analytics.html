@@ -1,0 +1,134 @@
+<div class="page-content">
+  <div class="section-header">
+    <div>
+      <h2>Monthly Reports</h2>
+      <p>Workshop performance and revenue analytics</p>
+    </div>
+    <div>
+      <input
+        type="month"
+        class="form-control"
+        style="width: auto; border-radius: 10px"
+        [value]="selectedMonth"
+        (change)="onMonthChange($event)"
+      />
+    </div>
+  </div>
+
+  @if (error) {
+    <div class="alert alert-danger">{{ error }}</div>
+  }
+  @if (trendError) {
+    <div class="alert alert-warning">{{ trendError }}</div>
+  }
+
+  @if (loading) {
+    <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+  } @else if (stats) {
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-card-icon blue">📋</div>
+        <div>
+          <div class="stat-card-value">{{ stats.totalBookings }}</div>
+          <p class="stat-card-label">Total Bookings</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon green">✓</div>
+        <div>
+          <div class="stat-card-value">{{ stats.completedCount }}</div>
+          <p class="stat-card-label">Completed Services</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon amber">⏳</div>
+        <div>
+          <div class="stat-card-value">{{ stats.pendingCount }}</div>
+          <p class="stat-card-label">Pending (in month)</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon purple">💰</div>
+        <div>
+          <div class="stat-card-value">Rs. {{ stats.totalRevenue | number }}</div>
+          <p class="stat-card-label">Total Revenue</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>Booking Status</h3>
+        <p class="chart-subtitle">Status breakdown for selected month</p>
+        @if (statusChartValues.length) {
+          <app-analytics-chart
+            kind="doughnut"
+            [labels]="statusChartLabels"
+            [values]="statusChartValues"
+            label="Bookings"
+            [colors]="statusColors"
+          />
+        } @else {
+          <p class="text-muted small py-4 text-center">No bookings in this month.</p>
+        }
+      </div>
+
+      <div class="chart-card">
+        <h3>Service Popularity</h3>
+        <p class="chart-subtitle">Bookings per service</p>
+        @if (serviceChartValues.length) {
+          <app-analytics-chart
+            kind="bar"
+            [labels]="serviceChartLabels"
+            [values]="serviceChartValues"
+            label="Bookings"
+            [colors]="serviceColors"
+          />
+        } @else {
+          <p class="text-muted small py-4 text-center">No service data for this month.</p>
+        }
+      </div>
+
+      <div class="chart-card">
+        <h3>Service Revenue</h3>
+        <p class="chart-subtitle">Revenue from completed bookings</p>
+        @if (serviceRevenueValues.some(v => v > 0)) {
+          <app-analytics-chart
+            kind="bar"
+            [labels]="serviceChartLabels"
+            [values]="serviceRevenueValues"
+            label="Revenue (Rs.)"
+            [colors]="['#8b5cf6']"
+          />
+        } @else {
+          <p class="text-muted small py-4 text-center">No completed revenue in this month.</p>
+        }
+      </div>
+
+      <div class="chart-card chart-card-wide">
+        <h3>6-Month Revenue Trend</h3>
+        <p class="chart-subtitle">Revenue from completed services</p>
+        @if (hasTrendData) {
+          <app-analytics-chart
+            kind="line"
+            [labels]="trendLabels"
+            [values]="trendRevenue"
+            label="Revenue (Rs.)"
+            [colors]="['#2563eb']"
+            [fill]="true"
+          />
+        } @else {
+          <p class="text-muted small py-4 text-center">Trend data unavailable.</p>
+        }
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-icon blue">⭐</div>
+      <div>
+        <div class="stat-card-value" style="font-size: 1.15rem">{{ stats.mostBookedService || '—' }}</div>
+        <p class="stat-card-label">Most Booked Service</p>
+      </div>
+    </div>
+  }
+</div>

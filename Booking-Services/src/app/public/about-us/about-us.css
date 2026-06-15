@@ -1,0 +1,72 @@
+.page-hero {
+  background: linear-gradient(135deg, #0f172a, #1e3a5f);
+  color: #fff;
+  padding: 4rem 0 3rem;
+  text-align: center;
+}
+
+.page-hero h1 {
+  font-weight: 800;
+  font-size: 2.5rem;
+}
+
+.page-hero p {
+  color: #94a3b8;
+  font-size: 1.1rem;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.stat-box {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+}
+
+.stat-box h3 {
+  color: #f97316;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+
+.stat-box p {
+  color: #64748b;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.value-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: 100%;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.value-card h5 {
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.value-card p {
+  color: #64748b;
+  margin: 0;
+}
+
+.btn-accent {
+  background: #f97316;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-accent:hover {
+  background: #ea580c;
+  color: #fff;
+}

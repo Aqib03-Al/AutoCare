@@ -1,0 +1,104 @@
+<a routerLink="/customer/services" class="btn btn-link mb-3">&larr; Back to Services</a>
+
+@if (loading) {
+  <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+} @else if (service) {
+  <div class="card shadow">
+    <div class="card-body p-4">
+      <h2 class="mb-1">Book: {{ service.name }}</h2>
+      <p class="text-muted">Rs. {{ service.price }} &middot; {{ service.duration }} minutes</p>
+
+      @if (validationError || apiError) {
+        <div #errorAlert>
+          @if (validationError) {
+            <div class="alert alert-warning mb-2" role="alert">{{ validationError }}</div>
+          }
+          @if (apiError) {
+            <div class="alert alert-danger mb-0" role="alert">{{ apiError }}</div>
+          }
+        </div>
+      }
+
+      <form [formGroup]="bookingForm" (ngSubmit)="submit()" novalidate>
+        <h5 class="mt-4">Vehicle Details</h5>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label required">Make</label>
+            <input
+              type="text"
+              class="form-control"
+              [class.is-invalid]="invalid('make')"
+              formControlName="make"
+              placeholder="e.g. Honda"
+            />
+            <app-field-error [control]="bookingForm.get('make')" label="Vehicle make" [submitted]="submitted" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label required">Model</label>
+            <input
+              type="text"
+              class="form-control"
+              [class.is-invalid]="invalid('model')"
+              formControlName="model"
+              placeholder="e.g. Civic"
+            />
+            <app-field-error [control]="bookingForm.get('model')" label="Vehicle model" [submitted]="submitted" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label required">Plate Number</label>
+            <input
+              type="text"
+              class="form-control"
+              [class.is-invalid]="invalid('plateNumber')"
+              formControlName="plateNumber"
+              placeholder="e.g. ABC-1234"
+            />
+            <app-field-error [control]="bookingForm.get('plateNumber')" label="Plate number" [submitted]="submitted" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label required">Year</label>
+            <input
+              type="text"
+              inputmode="numeric"
+              maxlength="4"
+              class="form-control"
+              [class.is-invalid]="invalid('year')"
+              formControlName="year"
+              placeholder="e.g. 2020"
+            />
+            <app-field-error [control]="bookingForm.get('year')" label="Vehicle year" [submitted]="submitted" />
+          </div>
+        </div>
+
+        <h5 class="mt-4">Preferred Schedule <span class="text-muted fw-normal fs-6">(optional)</span></h5>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Preferred Date</label>
+            <input type="date" class="form-control" formControlName="preferredDate" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Preferred Time</label>
+            <input type="time" class="form-control" formControlName="preferredTime" />
+          </div>
+          <div class="col-12 mb-3">
+            <label class="form-label">Notes</label>
+            <textarea
+              class="form-control"
+              [class.is-invalid]="invalid('notes')"
+              formControlName="notes"
+              rows="2"
+              placeholder="Any additional details about your vehicle or service request"
+            ></textarea>
+            <app-field-error [control]="bookingForm.get('notes')" label="Notes" [submitted]="submitted" />
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="submitting">
+          {{ submitting ? 'Submitting...' : 'Submit Booking Request' }}
+        </button>
+      </form>
+    </div>
+  </div>
+} @else {
+  <div class="alert alert-warning">{{ apiError || 'Service not found.' }}</div>
+}

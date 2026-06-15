@@ -1,0 +1,96 @@
+<div class="auth-page">
+  <div class="auth-panel auth-panel-brand">
+    <div class="auth-brand-content">
+      <span class="brand-mark d-inline-flex mb-3">AC</span>
+      <h1>Join AutoCare Workshop</h1>
+      <p>Create your free account and start booking professional vehicle services with transparent pricing.</p>
+      <ul class="auth-features">
+        <li>
+          <span class="auth-feature-icon">✓</span>
+          Free customer registration
+        </li>
+        <li>
+          <span class="auth-feature-icon">✓</span>
+          Online booking & scheduling
+        </li>
+        <li>
+          <span class="auth-feature-icon">✓</span>
+          Full booking history access
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="auth-panel auth-panel-form">
+    <div class="auth-card">
+      <h2>Create Account</h2>
+      <p class="auth-subtitle">Fill in your details to get started</p>
+
+      @if (error) {
+        <div class="alert alert-danger">{{ error }}</div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        @if (submitted && form.invalid) {
+          <div class="form-validation-summary">Please correct the highlighted fields before creating your account.</div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label required">Full Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [class.is-invalid]="invalid('name')"
+            formControlName="name"
+            placeholder="John Doe"
+            autocomplete="name"
+          />
+          <app-field-error [control]="form.get('name')" label="Full name" [submitted]="submitted" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label required">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            [class.is-invalid]="invalid('email')"
+            formControlName="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+          <app-field-error [control]="form.get('email')" label="Email" [submitted]="submitted" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Phone <span class="text-muted fw-normal">(optional)</span></label>
+          <input
+            type="text"
+            class="form-control"
+            [class.is-invalid]="invalid('phone')"
+            formControlName="phone"
+            placeholder="+92 300 1234567"
+            autocomplete="tel"
+          />
+          <app-field-error [control]="form.get('phone')" label="Phone number" [submitted]="submitted" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label required">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            [class.is-invalid]="invalid('password')"
+            formControlName="password"
+            placeholder="Minimum 6 characters"
+            autocomplete="new-password"
+          />
+          <app-field-error [control]="form.get('password')" label="Password" [submitted]="submitted" />
+        </div>
+        <button type="submit" class="auth-submit" [disabled]="loading">
+          {{ loading ? 'Creating account...' : 'Create Account' }}
+        </button>
+      </form>
+
+      <p class="auth-footer-link">
+        Already have an account? <a routerLink="/login">Sign in</a>
+      </p>
+    </div>
+  </div>
+</div>

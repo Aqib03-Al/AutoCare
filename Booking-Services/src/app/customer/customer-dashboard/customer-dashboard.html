@@ -1,0 +1,105 @@
+<div class="dashboard-page">
+  <!-- Hero -->
+  <section class="hero-banner">
+    <div class="hero-overlay"></div>
+    <div class="page-shell hero-content">
+      <h1>Welcome back, {{ firstName }}</h1>
+      <p>
+        @if (upcomingBooking) {
+          Your next scheduled service is <strong>{{ serviceName(upcomingBooking) }}</strong>
+          @if (upcomingBooking.assignedDate) {
+            on {{ upcomingBooking.assignedDate }}.
+          } @else {
+            — awaiting staff approval.
+          }
+        } @else {
+          Keep your vehicle in peak performance with our expert-led services. Book your next maintenance today.
+        }
+      </p>
+    </div>
+  </section>
+
+  <div class="page-shell dashboard-body">
+    <!-- Service Catalog -->
+    <section class="catalog-section">
+      <div class="section-header">
+        <div>
+          <h2>Service Catalog</h2>
+          <p>Select a professional service for your vehicle</p>
+        </div>
+        <div class="filter-tabs">
+          <button class="filter-tab" [class.active]="activeFilter === 'all'" (click)="setFilter('all')">All Services</button>
+          <button class="filter-tab" [class.active]="activeFilter === 'maintenance'" (click)="setFilter('maintenance')">Maintenance</button>
+          <button class="filter-tab" [class.active]="activeFilter === 'repair'" (click)="setFilter('repair')">Repair</button>
+        </div>
+      </div>
+
+      @if (loadingServices) {
+        <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+      } @else if (error) {
+        <div class="alert alert-danger">{{ error }}</div>
+      } @else {
+        <div class="row g-4">
+          @for (service of filteredServices; track service._id) {
+            <div class="col-md-6 col-lg-4">
+              <app-service-card [service]="service" (book)="bookService($event)" />
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+    <!-- Recent Bookings -->
+    <section class="bookings-section">
+      <div class="section-header">
+        <div>
+          <h2>Recent Bookings</h2>
+          <p>Your latest service appointments</p>
+        </div>
+        <a routerLink="/customer/bookings" class="link-action">View All History</a>
+      </div>
+
+      @if (bookingsError) {
+        <div class="alert alert-danger">{{ bookingsError }}</div>
+      }
+
+      @if (loadingBookings) {
+        <div class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary"></div></div>
+      } @else if (recentBookings.length === 0) {
+        <div class="empty-bookings">
+          <p>No bookings yet. Browse the catalog above and book your first service.</p>
+        </div>
+      } @else {
+        <div class="recent-table-wrap">
+          <table class="recent-table">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Vehicle</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (booking of recentBookings; track booking._id) {
+                <tr>
+                  <td>
+                    <div class="service-cell">
+                      <span class="service-cell-icon">🔧</span>
+                      {{ serviceName(booking) }}
+                    </div>
+                  </td>
+                  <td>{{ vehicleLabel(booking) }}</td>
+                  <td>{{ bookingDate(booking) }}</td>
+                  <td><app-status-badge [status]="booking.status" /></td>
+                  <td class="cost-cell">Rs. {{ booking.totalPrice | number }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </section>
+  </div>
+</div>

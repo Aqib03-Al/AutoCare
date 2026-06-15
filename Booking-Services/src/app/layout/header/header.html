@@ -1,0 +1,58 @@
+<nav class="app-navbar navbar navbar-expand-lg sticky-top">
+  <div class="container-fluid page-shell py-0">
+    <a class="navbar-brand fw-bold" routerLink="/">AutoCare</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mx-auto gap-lg-1">
+        @if (auth.currentUser()?.role === 'customer') {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/customer/dashboard" routerLinkActive="active">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/customer/services" routerLinkActive="active">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/customer/bookings" routerLinkActive="active">Bookings</a>
+          </li>
+        }
+        @if (auth.currentUser()?.role === 'staff') {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/staff/dashboard" routerLinkActive="active">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/staff/pending" routerLinkActive="active">Pending</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/staff/bookings" routerLinkActive="active">Bookings</a>
+          </li>
+        }
+        @if (auth.currentUser()?.role === 'admin') {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/services" routerLinkActive="active">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/analytics" routerLinkActive="active">Reports</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/customers" routerLinkActive="active">Customers</a>
+          </li>
+        }
+      </ul>
+      <ul class="navbar-nav align-items-lg-center gap-2">
+        @if (auth.currentUser()) {
+          <li class="nav-item d-none d-lg-block">
+            <span class="user-pill">{{ auth.currentUser()?.name?.charAt(0)?.toUpperCase() }}</span>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-nav btn-nav-outline" (click)="logout()">Logout</button>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>

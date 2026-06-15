@@ -1,0 +1,170 @@
+<div class="dashboard-page">
+  <section class="dashboard-hero">
+    <div class="dashboard-hero-content">
+      <h1>Welcome back, {{ firstName }}</h1>
+      <p>Overview of workshop performance, bookings, and revenue for this month.</p>
+    </div>
+  </section>
+
+  <div class="dashboard-page-shell">
+    @if (error) {
+      <div class="alert alert-danger">{{ error }}</div>
+    }
+    @if (dashboardError) {
+      <div class="alert alert-warning">{{ dashboardError }}</div>
+    }
+    @if (trendError) {
+      <div class="alert alert-warning">{{ trendError }}</div>
+    }
+
+    @if (loading) {
+      <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+    } @else {
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-card-icon blue">📋</div>
+          <div>
+            <div class="stat-card-value">{{ stats?.totalBookings ?? 0 }}</div>
+            <p class="stat-card-label">Bookings This Month</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon green">✓</div>
+          <div>
+            <div class="stat-card-value">{{ stats?.completedCount ?? 0 }}</div>
+            <p class="stat-card-label">Completed Services</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon amber">⏳</div>
+          <div>
+            <div class="stat-card-value">{{ pendingCount }}</div>
+            <p class="stat-card-label">Pending Now</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon purple">💰</div>
+          <div>
+            <div class="stat-card-value">Rs. {{ stats?.totalRevenue ?? 0 | number }}</div>
+            <p class="stat-card-label">Revenue This Month</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <div>
+          <h2>Analytics Overview</h2>
+          <p>Visual insights for bookings, services, and revenue trends</p>
+        </div>
+        <a routerLink="/admin/analytics" class="btn btn-outline-primary btn-sm">Full Reports</a>
+      </div>
+
+      @if (hasChartData) {
+        <div class="chart-grid">
+          <div class="chart-card">
+            <h3>Booking Status Breakdown</h3>
+            <p class="chart-subtitle">Current month distribution by status</p>
+            <app-analytics-chart
+              kind="doughnut"
+              [labels]="statusChartLabels"
+              [values]="statusChartValues"
+              label="Bookings"
+              [colors]="statusColors"
+            />
+          </div>
+
+          <div class="chart-card">
+            <h3>Bookings by Service</h3>
+            <p class="chart-subtitle">Most requested services this month</p>
+            <app-analytics-chart
+              kind="bar"
+              [labels]="serviceChartLabels"
+              [values]="serviceChartValues"
+              label="Bookings"
+              [colors]="serviceColors"
+            />
+          </div>
+
+          <div class="chart-card chart-card-wide">
+            <h3>6-Month Revenue Trend</h3>
+            <p class="chart-subtitle">Completed service revenue over time (Rs.)</p>
+            @if (hasTrendData) {
+              <app-analytics-chart
+                kind="line"
+                [labels]="trendLabels"
+                [values]="trendRevenue"
+                label="Revenue (Rs.)"
+                [colors]="['#2563eb']"
+                [fill]="true"
+              />
+            } @else {
+              <p class="text-muted small py-4 text-center">Trend data unavailable.</p>
+            }
+          </div>
+
+          <div class="chart-card chart-card-wide">
+            <h3>6-Month Booking Trend</h3>
+            <p class="chart-subtitle">Total bookings created per month</p>
+            @if (hasTrendData) {
+              <app-analytics-chart
+                kind="bar"
+                [labels]="trendLabels"
+                [values]="trendBookings"
+                label="Bookings"
+                [colors]="['#16a34a']"
+              />
+            } @else {
+              <p class="text-muted small py-4 text-center">Trend data unavailable.</p>
+            }
+          </div>
+        </div>
+      } @else {
+        <div class="empty-charts alert alert-light border">
+          No booking data yet for charts. Create some bookings to see analytics graphs here.
+        </div>
+      }
+
+      <div class="section-header">
+        <div>
+          <h2>Quick Actions</h2>
+          <p>Manage your workshop operations</p>
+        </div>
+      </div>
+
+      <div class="action-grid">
+        <a routerLink="/admin/services" class="action-card">
+          <span class="action-card-icon">🔧</span>
+          Manage Services
+        </a>
+        <a routerLink="/admin/staff" class="action-card">
+          <span class="action-card-icon">👥</span>
+          Manage Staff
+        </a>
+        <a routerLink="/admin/customers" class="action-card">
+          <span class="action-card-icon">🚗</span>
+          View Customers
+        </a>
+        <a routerLink="/admin/analytics" class="action-card">
+          <span class="action-card-icon">📊</span>
+          View Reports
+        </a>
+      </div>
+
+      @if (stats?.mostBookedService) {
+        <div class="section-header">
+          <div>
+            <h2>Top Service</h2>
+            <p>Most booked service this month</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon blue">⭐</div>
+          <div>
+            <div class="stat-card-value" style="font-size: 1.15rem">{{ stats?.mostBookedService }}</div>
+            <p class="stat-card-label">Highest demand service</p>
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>

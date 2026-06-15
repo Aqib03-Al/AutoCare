@@ -1,0 +1,96 @@
+<div class="landing-page">
+  <!-- Hero -->
+  <section class="hero-banner">
+    <div class="hero-overlay"></div>
+    <div class="page-shell hero-content">
+      <h1>Professional Vehicle Care,<br />Booked in Minutes</h1>
+      <p>
+        Browse expert workshop services, schedule appointments online, and track your booking from request to completion.
+      </p>
+      <div class="hero-actions">
+        <a routerLink="/register" class="btn btn-light btn-lg hero-btn">Get Started</a>
+        <a routerLink="/our-services" class="btn btn-outline-light btn-lg hero-btn">Explore Services</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-shell landing-body">
+    <!-- Service Catalog -->
+    <section class="catalog-section">
+      <div class="section-header">
+        <div>
+          <h2>Service Catalog</h2>
+          <p>Select a professional service for your vehicle</p>
+        </div>
+        <div class="filter-tabs">
+          <button class="filter-tab" [class.active]="activeFilter === 'all'" (click)="setFilter('all')">All Services</button>
+          <button class="filter-tab" [class.active]="activeFilter === 'maintenance'" (click)="setFilter('maintenance')">Maintenance</button>
+          <button class="filter-tab" [class.active]="activeFilter === 'repair'" (click)="setFilter('repair')">Repair</button>
+        </div>
+      </div>
+
+      @if (loading) {
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary"></div>
+        </div>
+      } @else if (error) {
+        <div class="alert alert-danger">{{ error }}</div>
+      } @else if (filteredServices.length === 0) {
+        <p class="text-muted">No services match this filter.</p>
+      } @else {
+        <div class="row g-4">
+          @for (service of filteredServices; track service._id) {
+            <div class="col-md-6 col-lg-4">
+              <app-service-card [service]="service" (book)="bookService($event)" />
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+    <!-- How it works -->
+    <section class="steps-section">
+      <h2 class="steps-title">How It Works</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="step-card">
+            <span class="step-num">1</span>
+            <h5>Register & Browse</h5>
+            <p>Create your account and explore available vehicle services with transparent pricing.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="step-card">
+            <span class="step-num">2</span>
+            <h5>Book Online</h5>
+            <p>Choose a service, enter your vehicle details, and submit your booking request.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="step-card">
+            <span class="step-num">3</span>
+            <h5>Track Progress</h5>
+            <p>Follow your booking from pending approval through to completed service.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA for bookings -->
+    <section class="bookings-preview">
+      <div class="section-header">
+        <div>
+          <h2>Your Bookings</h2>
+          <p>Sign in to view and manage your service history</p>
+        </div>
+        <a routerLink="/login" class="link-action">Login to View</a>
+      </div>
+      <div class="guest-bookings-card">
+        <div class="guest-icon">📋</div>
+        <h5>Track appointments in one place</h5>
+        <p>Register or login to see your recent bookings, assigned time slots, and service status updates.</p>
+        <a routerLink="/register" class="btn btn-accent">Create Free Account</a>
+      </div>
+    </section>
+  </div>
+</div>

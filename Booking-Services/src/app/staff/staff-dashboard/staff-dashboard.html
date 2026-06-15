@@ -1,0 +1,73 @@
+<div class="dashboard-page">
+  <section class="dashboard-hero">
+    <div class="dashboard-hero-content">
+      <h1>Welcome back, {{ firstName }}</h1>
+      <p>Review pending requests and manage today's workshop appointments.</p>
+    </div>
+  </section>
+
+  <div class="dashboard-page-shell">
+    @if (loading) {
+      <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+    } @else if (error) {
+      <div class="alert alert-danger">{{ error }}</div>
+    } @else {
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-card-icon amber">⏳</div>
+          <div>
+            <div class="stat-card-value">{{ pendingCount }}</div>
+            <p class="stat-card-label">Pending Requests</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon blue">📅</div>
+          <div>
+            <div class="stat-card-value">{{ todayBookings.length }}</div>
+            <p class="stat-card-label">Today's Appointments</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-grid">
+        <a routerLink="/staff/pending" class="action-card">
+          <span class="action-card-icon">📥</span>
+          Review Pending
+        </a>
+        <a routerLink="/staff/bookings" class="action-card">
+          <span class="action-card-icon">📋</span>
+          All Bookings
+        </a>
+      </div>
+
+      <div class="section-header">
+        <div>
+          <h2>Today's Appointments</h2>
+          <p>Scheduled services for today</p>
+        </div>
+        <a routerLink="/staff/bookings" class="link-action">View All</a>
+      </div>
+
+      @if (todayBookings.length === 0) {
+        <div class="empty-state">
+          <p>No appointments scheduled for today.</p>
+        </div>
+      } @else {
+        <div class="appointment-list">
+          @for (booking of todayBookings; track booking._id) {
+            <div class="appointment-item">
+              <div>
+                <div class="appointment-time">{{ booking.assignedTime || '—' }}</div>
+                <strong>{{ customerName(booking) }}</strong>
+                <div class="appointment-meta">
+                  {{ serviceName(booking) }} · {{ booking.vehicle.make }} {{ booking.vehicle.model }} · {{ booking.vehicle.plateNumber }}
+                </div>
+              </div>
+              <app-status-badge [status]="booking.status" />
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+</div>
